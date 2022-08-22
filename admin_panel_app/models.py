@@ -8,6 +8,13 @@ class Contacts(models.Model):
     url = models.URLField(verbose_name='Свяжитесь с нами', blank=True, null=True)
     url2 = models.URLField(verbose_name='Свяжитесь с нами', blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
+
+    def __str__(self):
+        return self.text
+
 
 class News(models.Model):
     name = models.CharField(max_length=250,
@@ -20,9 +27,17 @@ class News(models.Model):
                             blank=True, null=True)
     user = models.ForeignKey(AUTH_USER_MODEL,
                              on_delete=models.SET_NULL,
+                             verbose_name='Пользователь',
                              null=True)
     date = models.DateField(auto_now=True,
                             verbose_name='Дата')
+
+    class Meta:
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Новости'
+
+    def __str__(self):
+        return self.name
 
 
 class Topic(models.Model):
@@ -30,10 +45,18 @@ class Topic(models.Model):
                             verbose_name='Название темы',
                             unique=True)
 
+    class Meta:
+        verbose_name = 'Тема'
+        verbose_name_plural = 'Темы'
+
+    def __str__(self):
+        return self.name
+
 
 class FAQ(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL,
                              on_delete=models.SET_NULL,
+                             verbose_name='Пользователь',
                              null=True)
     topic = models.ForeignKey(Topic,
                               on_delete=models.CASCADE,
@@ -46,6 +69,13 @@ class FAQ(models.Model):
     photo = models.FileField(upload_to='FAQ photos',
                              verbose_name='Файл или изображение',
                              blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQ'
+
+    def __str__(self):
+        return f'{self.question}-{self.answer}'
 
 
 class Person(models.Model):
@@ -65,6 +95,13 @@ class Person(models.Model):
                               verbose_name='Файл или изображение',
                               blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'Персона'
+        verbose_name_plural = 'Персоны'
+
+    def __str__(self):
+        return self.english_name
+
 
 class Team(models.Model):
     cover = models.ImageField(upload_to='cover/', verbose_name='Обложка',
@@ -83,5 +120,12 @@ class Team(models.Model):
     discord = models.URLField(verbose_name='Discord сервер',
                               blank=True, null=True)
     members = models.ManyToManyField(AUTH_USER_MODEL, verbose_name='УЧАСТНИКИ',
-                                     blank=True, null=True)
+                                     blank=True)
+
+    class Meta:
+        verbose_name = 'Команда'
+        verbose_name_plural = 'Команды'
+
+    def __str__(self):
+        return self.name
 
