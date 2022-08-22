@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'silk',
     # my apps
+    'admin_panel_app',
     'account_app',
 ]
 
