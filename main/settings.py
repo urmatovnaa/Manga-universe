@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'silk',
     # my apps
+    'title_app',
     'admin_panel_app',
     'account_app',
 ]
@@ -122,9 +123,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bishkek'
 
 USE_I18N = True
 
