@@ -23,17 +23,18 @@ class TitleRatingSerializer(serializers.ModelSerializer):
 
 
 class TitleDetailSerializer(serializers.ModelSerializer):
-    section = 'info'
     rate = TitleRatingSerializer(many=True)
     rating_count = serializers.IntegerField(read_only=True)
     _average_rating = serializers.DecimalField(read_only=True, max_digits=4, decimal_places=2)
     title_status_name = serializers.CharField(read_only=True)
     translator_status_name = serializers.CharField(read_only=True)
     adult_content_name = serializers.CharField(read_only=True)
+    title_type_name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Title
-        exclude = ['user', 'download_chapter', 'links_to_original']
+        exclude = ['user', 'download_chapter', 'links_to_original', 'genres',
+                   'tags', 'translators', 'description']
 
 
 class TitleListSerializer(serializers.ModelSerializer):

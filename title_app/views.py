@@ -32,7 +32,11 @@ class TitleViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Title.objects.all().annotate(rating_count=Count('rate__star'),
-                                            _average_rating=Avg('rate__star')).order_by('-rating_count')
+                                            _average_rating=Avg('rate__star'),
+                                            title_type_name=F('title_type__name'),
+                                            adult_content_name=F('adult_content__name'),
+                                            translator_status_name=F('translator_status__name')
+                                            ).order_by('-rating_count')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
