@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # third party
+    'drf_multiple_model',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'title_app',
     'admin_panel_app',
     'account_app',
+    'info_section_app'
 ]
 
 MIDDLEWARE = [
@@ -147,9 +149,9 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework.authentication.TokenAuthentication',
+    # ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10000
 }
@@ -165,7 +167,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
 # for jazzmin admin
-# JAZZMIN_SETTINGS["show_ui_builder"] = True
 
 JAZZMIN_SETTINGS = {
     "site_title": "MangaLib Admin",

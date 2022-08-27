@@ -1,6 +1,44 @@
 from rest_framework import serializers
 
-from title_app.models import Title, Rating
+from title_app.models import Title, Rating, Genre, Tag, ReleaseFormat
+
+from admin_panel_app.models import Person, Team
+from info_section_app.serializers import SimilarSerializer
+
+
+class GenreSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Genre
+        fields = '__all__'
+
+
+class TagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
+        fields = '__all__'
+
+
+class TranslatorsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Team
+        fields = ['name']
+
+
+class PersonSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Person
+        fields = ['english_name']
+
+
+class ReleaseFormatSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ReleaseFormat
+        fields = '__all__'
 
 
 class TitleRatingSerializer(serializers.ModelSerializer):
@@ -16,7 +54,7 @@ class TitleRatingSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         rate, _ = Rating.objects.update_or_create(
             user=validated_data.get('user', None),
-            title=validated_data.get('title', None),
+            title_id=validated_data.get('title', None),
             defaults={'star': validated_data.get("star")}
         )
         return rate
@@ -30,6 +68,10 @@ class TitleDetailSerializer(serializers.ModelSerializer):
     translator_status_name = serializers.CharField(read_only=True)
     adult_content_name = serializers.CharField(read_only=True)
     title_type_name = serializers.CharField(read_only=True)
+    release_format = ReleaseFormatSerializer(many=True)
+    author = PersonSerializer(many=True)
+    artist = PersonSerializer(many=True)
+    publisher = PersonSerializer(many=True)
 
     class Meta:
         model = Title
@@ -43,6 +85,9 @@ class TitleListSerializer(serializers.ModelSerializer):
     _average_rating = serializers.DecimalField(read_only=True, max_digits=4, decimal_places=2)
     title_type_name = serializers.CharField(read_only=True)
     adult_content_name = serializers.CharField(read_only=True)
+    author = PersonSerializer(many=True)
+    genres = GenreSerializer(many=True)
+    tags = TagSerializer(many=True)
 
     class Meta:
         model = Title
@@ -51,3 +96,13 @@ class TitleListSerializer(serializers.ModelSerializer):
                   'description', 'rate', 'rating_count', '_average_rating', 'title_type_name',
                   'adult_content_name']
 
+
+class TitleInfoSerializer(serializers.ModelSerializer):
+    genres = GenreSerializer(many=True)
+    tags = TagSerializer(many=True)
+    translators = TranslatorsSerializer(many=True)
+    similar_titles = SimilarSerializer(many=True)
+
+    class Meta:
+        model = Title
+        fields = ['id', 'genres', 'tags', 'description', 'translators', 'similar_titles']

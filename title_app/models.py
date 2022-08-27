@@ -155,15 +155,19 @@ class Title(models.Model):
                                        related_name='publisher')
     genres = models.ManyToManyField(Genre,
                                     verbose_name='Жанр',
+                                    related_name='genres',
                                     blank=True)
     tags = models.ManyToManyField(Tag,
                                   verbose_name='Теги',
+                                  related_name='tags',
                                   blank=True)
     release_format = models.ManyToManyField(ReleaseFormat,
                                             verbose_name='Формат выпуска',
+                                            related_name='release_format',
                                             blank=True)
     translators = models.ManyToManyField(Team,
                                          verbose_name='Переводчики',
+                                         related_name='translators',
                                          blank=True)
     title_status = models.ForeignKey(TitleStatus,
                                      models.SET_NULL,
@@ -188,6 +192,10 @@ class Title(models.Model):
                                    blank=True, null=True)
     date_created = models.DateTimeField(verbose_name='Дата создания',
                                         default=timezone.now)
+    # similar = models.ManyToManyField('self', verbose_name='Похожее',
+    #                                  related_name='similar_titles',
+    #                                  symmetrical=False,
+    #                                  blank=True)
 
     class Meta:
         verbose_name = 'Тайтл'
