@@ -6,7 +6,6 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import status
 from rest_framework.response import Response
 
-from info_section_app.models import SimilarTitle
 from title_app.models import Title, Rating
 from title_app.serializers import TitleListSerializer, TitleRatingSerializer, \
     TitleDetailSerializer, TitleInfoSerializer
