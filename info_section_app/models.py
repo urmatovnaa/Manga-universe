@@ -29,9 +29,6 @@ class SimilarTitle(models.Model):
     def __str__(self):
         return f'{self.title} - {self.main_title} - {self.criterion}'
 
-    def get_similar_count(self):
-        return Count('likes')
-
 
 class SimilarLike(models.Model):
     similar = models.ForeignKey(SimilarTitle, models.CASCADE, related_name='likes')

@@ -1,10 +1,23 @@
-from django.db.models import Count
 from rest_framework import serializers
 
-from info_section_app.models import SimilarTitle
+from info_section_app.models import SimilarTitle, SimilarLike, SimilarDislike
+
+
+class SimilarLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SimilarLike
+        fields = '__all__'
+
+
+class SimilarDislikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SimilarDislike
+        fields = '__all__'
 
 
 class SimilarSerializer(serializers.ModelSerializer):
+    likes = SimilarLikeSerializer(many=True)
+    dislikes = SimilarDislikeSerializer(many=True)
 
     class Meta:
         model = SimilarTitle
@@ -14,7 +27,7 @@ class SimilarSerializer(serializers.ModelSerializer):
         }
 
     def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['similar_count'] = 'likes'.count()
+        response = super().to_representation(instance)
+        response['similar_count'] = len(response['likes'])-len(response['dislikes'])
+        return response
 
-        return representation
