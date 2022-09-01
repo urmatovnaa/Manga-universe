@@ -9,9 +9,6 @@ urlpatterns = [
     )),
     path('<str:title_url>/info', TitleInfoViewSet.as_view({'get': 'retrieve'})),
     path('<int:title_pk>/rating', MyUserRatingView.as_view({'post': 'create'})),
-    path('<int:similar_pk>/like/', SimilarLikeView.as_view()),
-    path('<int:similar_pk>/dislike/', SimilarDislikeView.as_view()),
-    path('<int:title_pk>/similar', SimilarView.as_view({'post': 'create'})),
 
     # path('<int:rest_pk>/review/create/', ReviewView.as_view({'get': 'list', 'post': 'create'})),
     # path('<int:rest_pk>/favorites/', FavoritesView.as_view()),

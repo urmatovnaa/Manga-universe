@@ -3,7 +3,7 @@ from rest_framework import serializers
 from title_app.models import Title, Rating, Genre, Tag, ReleaseFormat
 
 from admin_panel_app.models import Person, Team
-from info_section_app.serializers import SimilarSerializer
+from info_section_app.serializers import SimilarSerializer, RelatedSerializer
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -102,7 +102,9 @@ class TitleInfoSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     translators = TranslatorsSerializer(many=True)
     similar_titles = SimilarSerializer(many=True)
+    related_titles = RelatedSerializer(many=True)
 
     class Meta:
         model = Title
-        fields = ['id', 'genres', 'tags', 'description', 'translators', 'similar_titles']
+        fields = ['id', 'genres', 'tags', 'description', 'translators',
+                  'similar_titles', 'related_titles']

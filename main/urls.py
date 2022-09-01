@@ -30,6 +30,7 @@ urlpatterns = [
    path('admin/', admin.site.urls),
    # my urls
    path('', include('title_app.urls')),
+   path('manga/', include('info_section_app.urls')),
    path('social/', include('account_app.urls'))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
