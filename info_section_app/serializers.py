@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from info_section_app.models import SimilarTitle, SimilarLike, SimilarDislike
+from info_section_app.models import SimilarTitle, SimilarLike, SimilarDislike, CRITERION_CHOICES
+from title_app.models import Title
 
 
 class SimilarLikeSerializer(serializers.ModelSerializer):
@@ -15,16 +16,32 @@ class SimilarDislikeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SimilarSerializer(serializers.ModelSerializer):
-    likes = SimilarLikeSerializer(many=True)
-    dislikes = SimilarDislikeSerializer(many=True)
+class SimilarInfoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Title
+        fields = ['russian_name', 'cover']
+
+
+class SimilarCreateSerializer(serializers.ModelSerializer):
+    criterion = serializers.MultipleChoiceField(choices=CRITERION_CHOICES)
 
     class Meta:
         model = SimilarTitle
         fields = '__all__'
         extra_kwargs = {
-            'main_title': {'read_only': True},
+            'main_title': {'read_only': True}
         }
+
+
+class SimilarSerializer(serializers.ModelSerializer):
+    likes = SimilarLikeSerializer(many=True)
+    dislikes = SimilarDislikeSerializer(many=True)
+    title = SimilarInfoSerializer()
+
+    class Meta:
+        model = SimilarTitle
+        fields = '__all__'
 
     def to_representation(self, instance):
         response = super().to_representation(instance)

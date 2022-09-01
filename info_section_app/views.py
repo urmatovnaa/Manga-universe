@@ -5,11 +5,11 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from info_section_app.models import SimilarLike, SimilarDislike, SimilarTitle
-from info_section_app.serializers import SimilarSerializer
+from info_section_app.serializers import SimilarSerializer, SimilarCreateSerializer
 
 
 class SimilarView(ModelViewSet):
-    serializer_class = SimilarSerializer
+    serializer_class = SimilarCreateSerializer
     lookup_field = 'title_pk'
 
     def create(self, request, *args, **kwargs):
