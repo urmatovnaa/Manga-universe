@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from info_section_app.models import SimilarTitle, SimilarLike, SimilarDislike, CRITERION_CHOICES
+from info_section_app.models import SimilarTitle, SimilarLike, SimilarDislike, CRITERION_CHOICES, RelatedTitle
 from title_app.models import Title
 
 
@@ -20,7 +20,7 @@ class SimilarInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Title
-        fields = ['russian_name', 'cover']
+        fields = ['russian_name', 'english_name', 'cover']
 
 
 class SimilarCreateSerializer(serializers.ModelSerializer):
@@ -48,3 +48,20 @@ class SimilarSerializer(serializers.ModelSerializer):
         response['similar_count'] = len(response['likes'])-len(response['dislikes'])
         return response
 
+
+class RelatedCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = RelatedTitle
+        fields = '__all__'
+        extra_kwargs = {
+            'main_title': {'read_only': True}
+        }
+
+
+class RelatedSerializer(serializers.ModelSerializer):
+    title = SimilarInfoSerializer()
+
+    class Meta:
+        model = RelatedTitle
+        fields = '__all__'

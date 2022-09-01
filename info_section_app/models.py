@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Count
 
 from multiselectfield import MultiSelectField
 
@@ -42,36 +41,36 @@ class SimilarDislike(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, models.SET_NULL, null=True)
 
 
-# class RelatedTitle(models.Model):
-    # CRITERION_CHOICES = (
-    #     ('same genres', 'По жанрам'),
-    #     ('same panache', 'По рисовке'),
-    #     ('same plot', 'По сюжету'))
-    # main_title = models.ForeignKey(Title, on_delete=models.CASCADE,
-    #                                verbose_name='Главный тайтл ', related_name='similar_titles')
-    # title = models.ForeignKey(Title, on_delete=models.SET_NULL,
-    #                           verbose_name='Похожий тайтл', related_name='sim_title', null=True)
-    # criterion = MultiSelectField(max_length=25,
-    #                              choices=CRITERION_CHOICES,
-    #                              max_choices=2,
-    #                              verbose_name='Выбрать критерий схожести (макс. 2)')
+class RelatedTitle(models.Model):
+    RELATED_TYPE_CHOICES = (
+        ('adaptation', 'Адаптация'),
+        ('origin', 'Источник'),
+        ('backstory', 'Предыстория'),
+        ('continuation', 'Продолжение'),
+        ('alternative history', 'Альтернативная история'),
+        ('spin-off', 'Спин-офф'),
+        ('crossover', 'Кроссовер'),
+        ('color version', 'Цветная версия'),
+        ('restart', 'Перезапуск'),
+        ('another', 'Другое'),
+    )
+    main_title = models.ForeignKey(Title, on_delete=models.CASCADE,
+                                   verbose_name='Главный тайтл ', related_name='related_titles')
+    title = models.ForeignKey(Title, on_delete=models.SET_NULL,
+                              verbose_name='Связанный тайтл', related_name='rel_title', null=True)
+    related_type = models.CharField(max_length=50,
+                                    choices=RELATED_TYPE_CHOICES,
+                                    verbose_name='Тип связи')
 
-    # class Meta:
-    #     verbose_name = 'Похожее'
-    #     verbose_name_plural = 'Похожее'
-    #     unique_together = (("main_title", "title"),)
-    #
-    # def __str__(self):
-    #     return f'{self.title} - {self.main_title} - {self.criterion}'
+    class Meta:
+        verbose_name = 'Связанное'
+        verbose_name_plural = 'Связанное'
+        unique_together = (("main_title", "title"),)
+
+    def __str__(self):
+        return f'{self.title} - {self.main_title} - {self.criterion}'
 
 
-
-
-
-# class related:
-# 	title(с которым связан)
-# 	title(тот самый связанный)
-# 	related_type(choices)
 # class  statistics:
 # 	folder
 # 	count
