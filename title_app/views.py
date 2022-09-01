@@ -15,7 +15,7 @@ from title_app.permissions import RatingPermission
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    """ Каталог Манги """
+    """ Manga-List """
     serializer_class = TitleListSerializer
     serializer_classes = {
         'retrieve': TitleDetailSerializer,
@@ -46,6 +46,7 @@ class TitleInfoViewSet(viewsets.ModelViewSet):
 
 
 class MyUserRatingView(viewsets.ModelViewSet):
+    """ create/update Rating View """
     serializer_class = TitleRatingSerializer
     permission_classes = (RatingPermission,)
     queryset = Rating.objects.all()

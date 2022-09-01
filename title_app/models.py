@@ -109,6 +109,7 @@ class AdultContent(models.Model):
 
 
 class Title(models.Model):
+    """ Title/Manga model """
     user = models.ForeignKey(AUTH_USER_MODEL,
                              on_delete=models.SET_NULL,
                              verbose_name='Пользователь',
@@ -192,10 +193,6 @@ class Title(models.Model):
                                    blank=True, null=True)
     date_created = models.DateTimeField(verbose_name='Дата создания',
                                         default=timezone.now)
-    # similar = models.ManyToManyField('self', verbose_name='Похожее',
-    #                                  related_name='similar_titles',
-    #                                  symmetrical=False,
-    #                                  blank=True)
 
     class Meta:
         verbose_name = 'Тайтл'

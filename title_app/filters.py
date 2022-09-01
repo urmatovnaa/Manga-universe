@@ -6,6 +6,7 @@ from title_app.models import Tag, Genre, Title, TitleStatus, AdultContent, \
 
 
 class TitleFilter(filters.FilterSet):
+    """ TitleList filters """
     genres = filters.ModelMultipleChoiceFilter(queryset=Genre.objects.all(), widget=CheckboxSelectMultiple(), label="Жанры")
     tags = filters.ModelMultipleChoiceFilter(queryset=Tag.objects.all(), widget=CheckboxSelectMultiple(), label="Теги")
     min_year = filters.NumberFilter(field_name="year", lookup_expr='gte', label='Год выпуска')

@@ -42,6 +42,7 @@ class ReleaseFormatSerializer(serializers.ModelSerializer):
 
 
 class TitleRatingSerializer(serializers.ModelSerializer):
+    """ Serializer for create/update Title Rating """
 
     class Meta:
         model = Rating
@@ -61,6 +62,7 @@ class TitleRatingSerializer(serializers.ModelSerializer):
 
 
 class TitleDetailSerializer(serializers.ModelSerializer):
+    """ Serializer for unchangeable TitleDetail """
     rate = TitleRatingSerializer(many=True)
     rating_count = serializers.IntegerField(read_only=True)
     _average_rating = serializers.DecimalField(read_only=True, max_digits=4, decimal_places=2)
@@ -80,6 +82,7 @@ class TitleDetailSerializer(serializers.ModelSerializer):
 
 
 class TitleListSerializer(serializers.ModelSerializer):
+    """ Serializer for manga-list """
     rate = TitleRatingSerializer(many=True)
     rating_count = serializers.IntegerField(read_only=True)
     _average_rating = serializers.DecimalField(read_only=True, max_digits=4, decimal_places=2)
@@ -98,6 +101,7 @@ class TitleListSerializer(serializers.ModelSerializer):
 
 
 class TitleInfoSerializer(serializers.ModelSerializer):
+    """ Serializer for info section TitleDetail """
     genres = GenreSerializer(many=True)
     tags = TagSerializer(many=True)
     translators = TranslatorsSerializer(many=True)

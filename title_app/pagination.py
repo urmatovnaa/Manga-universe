@@ -3,6 +3,7 @@ from rest_framework.response import Response
 
 
 class TitlesPagination(PageNumberPagination):
+    """ Pagination for main page """
     page_size = 20
 
     def get_paginated_response(self, data):
