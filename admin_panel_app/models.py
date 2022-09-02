@@ -4,6 +4,7 @@ from main.settings import AUTH_USER_MODEL
 
 
 class Contacts(models.Model):
+    """ Model for connection with admins """
     text = models.CharField(max_length=500, verbose_name='Текст')
     url = models.URLField(verbose_name='Свяжитесь с нами', blank=True, null=True)
     url2 = models.URLField(verbose_name='Свяжитесь с нами', blank=True, null=True)
@@ -17,6 +18,7 @@ class Contacts(models.Model):
 
 
 class News(models.Model):
+    """ Model for site-news """
     name = models.CharField(max_length=250,
                             verbose_name='Заголовок')
     text = models.CharField(max_length=2000,
@@ -54,6 +56,7 @@ class Topic(models.Model):
 
 
 class FAQ(models.Model):
+    """ Model for Frequently Asked Question(s) """
     user = models.ForeignKey(AUTH_USER_MODEL,
                              on_delete=models.SET_NULL,
                              verbose_name='Пользователь',
@@ -79,6 +82,7 @@ class FAQ(models.Model):
 
 
 class Person(models.Model):
+    """ Model for author, artist, publisher """
     english_name = models.CharField(max_length=60,
                                     verbose_name='Имя на английском (без иероглифов)',
                                     unique=True)
@@ -104,6 +108,7 @@ class Person(models.Model):
 
 
 class Team(models.Model):
+    """ Model for teams/translators """
     cover = models.ImageField(upload_to='cover/', verbose_name='Обложка',
                               blank=True, null=True)
     name = models.CharField(max_length=100,
