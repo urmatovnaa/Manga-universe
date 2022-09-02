@@ -4,6 +4,7 @@ from account_app.models import Account
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    """ Serializer for registration my users  """
     confirm_password = serializers.CharField(required=True, min_length=8, write_only=True)
 
     class Meta:
@@ -28,6 +29,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.ModelSerializer):
+    """ Login for my users """
     class Meta:
         model = Account
         fields = ['email', 'password']
