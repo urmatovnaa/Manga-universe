@@ -1,8 +1,12 @@
 from django.db import models
+from colorfield.fields import ColorField
 
 from multiselectfield import MultiSelectField
 
+from account_app.models import Account
+
 from main.settings import AUTH_USER_MODEL
+
 from title_app.models import Title
 
 
@@ -71,10 +75,35 @@ class RelatedTitle(models.Model):
         return f'{self.title} - {self.main_title} - {self.criterion}'
 
 
-# class  statistics:
-# 	folder
-# 	count
-# 	persent
+class Folder(models.Model):
+    name = models.CharField(max_length=20,
+                            verbose_name='Название вкладки')
+    public = models.BooleanField(verbose_name='Публичная')
+    color = ColorField(verbose_name='Цвет')
+
+
+class Favorite(models.Model):
+    """Избранное"""
+    user = models.ForeignKey(Account,
+                             on_delete=models.CASCADE,
+                             verbose_name='пользователь',
+                             related_name='favorite_user')
+    title = models.ForeignKey(Title,
+                              on_delete=models.CASCADE,
+                              verbose_name='тайтл',
+                              related_name='manga_list')
+    folder = models.ForeignKey(Folder,
+                               on_delete=models.CASCADE,
+                               verbose_name='вкладка',
+                               related_name='favorite_folder')
+
+
+# class Statistic(models.Model):
+#     folder =
+#     count =
+#     persent =
+
+
 # class rating:
 # 	star
 # 	count
