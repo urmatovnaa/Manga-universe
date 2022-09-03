@@ -63,10 +63,9 @@ class RelatedTitle(models.Model):
         ('another', 'Другое'),
     )
 
-    user = models.ForeignKey(Account,
-                             on_delete=models.CASCADE,
-                             verbose_name='пользователь',
-                             related_name='related_title_owner')
+    user = models.ManyToManyField(Account,
+                                  verbose_name='пользователи',
+                                  related_name='related_title_owners')
     main_title = models.ForeignKey(Title, on_delete=models.CASCADE,
                                    verbose_name='Главный тайтл ', related_name='related_titles')
     title = models.ForeignKey(Title, on_delete=models.SET_NULL,

@@ -110,10 +110,8 @@ class AdultContent(models.Model):
 
 class Title(models.Model):
     """ Title/Manga model """
-    user = models.ForeignKey(AUTH_USER_MODEL,
-                             on_delete=models.SET_NULL,
-                             verbose_name='Пользователь',
-                             null=True)
+    user = models.ManyToManyField(AUTH_USER_MODEL,
+                                  verbose_name='Пользователь')
     cover = models.ImageField(upload_to='cover/',
                               verbose_name='Обложка',
                               blank=True, null=True)
