@@ -17,6 +17,7 @@ class SimilarDislikeSerializer(serializers.ModelSerializer):
 
 
 class SimilarInfoSerializer(serializers.ModelSerializer):
+    """ Serializer for get info about related/similar title """
 
     class Meta:
         model = Title
@@ -24,6 +25,7 @@ class SimilarInfoSerializer(serializers.ModelSerializer):
 
 
 class SimilarCreateSerializer(serializers.ModelSerializer):
+    """ Serializer for create Similar Titles """
     criterion = serializers.MultipleChoiceField(choices=CRITERION_CHOICES)
 
     class Meta:
@@ -35,6 +37,7 @@ class SimilarCreateSerializer(serializers.ModelSerializer):
 
 
 class SimilarSerializer(serializers.ModelSerializer):
+    """ Serializer for get Similar Titles with similar count """
     likes = SimilarLikeSerializer(many=True)
     dislikes = SimilarDislikeSerializer(many=True)
     title = SimilarInfoSerializer()
@@ -50,6 +53,7 @@ class SimilarSerializer(serializers.ModelSerializer):
 
 
 class RelatedCreateSerializer(serializers.ModelSerializer):
+    """ Serializer for create Related Titles """
 
     class Meta:
         model = RelatedTitle
@@ -60,6 +64,7 @@ class RelatedCreateSerializer(serializers.ModelSerializer):
 
 
 class RelatedSerializer(serializers.ModelSerializer):
+    """ Serializer for get Related Titles """
     title = SimilarInfoSerializer()
 
     class Meta:

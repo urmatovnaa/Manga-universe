@@ -9,6 +9,7 @@ from info_section_app.serializers import SimilarCreateSerializer, RelatedCreateS
 
 
 class SimilarView(ModelViewSet):
+    """ View for create Similar Titles with exceptions """
     serializer_class = SimilarCreateSerializer
     lookup_field = 'title_pk'
 
@@ -30,6 +31,7 @@ class SimilarView(ModelViewSet):
 
 
 class SimilarLikeView(APIView):
+    """ Like System """
 
     def get(self, request, similar_pk):
         created_liked = SimilarLike.objects.filter(similar_id=similar_pk, user=request.user).exists()
@@ -51,6 +53,7 @@ class SimilarLikeView(APIView):
 
 
 class SimilarDislikeView(APIView):
+    """ Dislike System """
 
     def get(self, request, similar_pk):
         created_liked = SimilarLike.objects.filter(similar_id=similar_pk, user=request.user).exists()
@@ -72,6 +75,7 @@ class SimilarDislikeView(APIView):
 
 
 class RelatedView(ModelViewSet):
+    """ View for create Related Titles """
     serializer_class = RelatedCreateSerializer
     lookup_field = 'title_pk'
 
