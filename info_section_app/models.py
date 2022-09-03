@@ -106,34 +106,10 @@ class Favorite(models.Model):
                                related_name='favorite_folder')
 
     class Meta:
-        verbose_name = 'Избранное'
-        verbose_name_plural = 'Избранные'
+        verbose_name = 'В списках'
+        verbose_name_plural = 'В списках'
         unique_together = (("user", "title"),)
 
     def __str__(self):
         return f'{self.title} - {self.folder} - {self.user}'
 
-
-class StatisticFav(models.Model):
-    title = models.ForeignKey(Title,
-                              on_delete=models.CASCADE,
-                              verbose_name='тайтл',
-                              related_name='statistic_title')
-    folder = models.ForeignKey(Folder,
-                               on_delete=models.CASCADE,
-                               verbose_name='вкладка',
-                               related_name='statistic_folder')
-
-    class Meta:
-        verbose_name = 'В списках'
-        verbose_name_plural = 'В списках'
-        unique_together = (("title", "folder"),)
-
-    def __str__(self):
-        return f'{self.title} - {self.folder}'
-
-
-# class rating:
-# 	star
-# 	count
-# 	persent
