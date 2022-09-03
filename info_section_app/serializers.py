@@ -20,7 +20,7 @@ class SimilarInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Title
-        fields = ['id', 'russian_name', 'english_name', 'cover']
+        fields = ['id', 'russian_name', 'cover']
 
 
 class SimilarCreateSerializer(serializers.ModelSerializer):
