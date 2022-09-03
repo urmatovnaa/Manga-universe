@@ -17,6 +17,7 @@ CRITERION_CHOICES = (
 
 
 class SimilarTitle(models.Model):
+    """ Model for Similar Titles """
     main_title = models.ForeignKey(Title, on_delete=models.CASCADE,
                                    verbose_name='Главный тайтл ', related_name='similar_titles')
     title = models.ForeignKey(Title, on_delete=models.SET_NULL,
@@ -36,16 +37,19 @@ class SimilarTitle(models.Model):
 
 
 class SimilarLike(models.Model):
+    """ Likes for Similar Titles """
     similar = models.ForeignKey(SimilarTitle, models.CASCADE, related_name='likes')
     user = models.ForeignKey(AUTH_USER_MODEL, models.SET_NULL, null=True)
 
 
 class SimilarDislike(models.Model):
+    """ Dislikes for Similar Titles """
     similar = models.ForeignKey(SimilarTitle, models.CASCADE, related_name='dislikes')
     user = models.ForeignKey(AUTH_USER_MODEL, models.SET_NULL, null=True)
 
 
 class RelatedTitle(models.Model):
+    """ Model for Related Titles """
     RELATED_TYPE_CHOICES = (
         ('adaptation', 'Адаптация'),
         ('origin', 'Источник'),
@@ -58,6 +62,11 @@ class RelatedTitle(models.Model):
         ('restart', 'Перезапуск'),
         ('another', 'Другое'),
     )
+
+    user = models.ForeignKey(Account,
+                             on_delete=models.CASCADE,
+                             verbose_name='пользователь',
+                             related_name='related_title_owner')
     main_title = models.ForeignKey(Title, on_delete=models.CASCADE,
                                    verbose_name='Главный тайтл ', related_name='related_titles')
     title = models.ForeignKey(Title, on_delete=models.SET_NULL,
@@ -76,6 +85,11 @@ class RelatedTitle(models.Model):
 
 
 class Folder(models.Model):
+    """ Model for create folders """
+    user = models.ForeignKey(Account,
+                             on_delete=models.CASCADE,
+                             verbose_name='пользователь',
+                             related_name='folder_owner')
     name = models.CharField(max_length=20,
                             verbose_name='Название вкладки',
                             unique=True)
@@ -91,7 +105,7 @@ class Folder(models.Model):
 
 
 class Favorite(models.Model):
-    """Избранное"""
+    """ Избранное """
     user = models.ForeignKey(Account,
                              on_delete=models.CASCADE,
                              verbose_name='пользователь',
