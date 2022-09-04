@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from info_section_app.models import SimilarTitle, SimilarLike, SimilarDislike, CRITERION_CHOICES, RelatedTitle
+from info_section_app.models import SimilarTitle, SimilarLike, SimilarDislike, CRITERION_CHOICES, RelatedTitle, Folder, \
+    Favorite
 from title_app.models import Title
 
 
@@ -59,7 +60,8 @@ class RelatedCreateSerializer(serializers.ModelSerializer):
         model = RelatedTitle
         fields = '__all__'
         extra_kwargs = {
-            'main_title': {'read_only': True}
+            'main_title': {'read_only': True},
+            'user': {'read_only': True}
         }
 
 
@@ -70,3 +72,26 @@ class RelatedSerializer(serializers.ModelSerializer):
     class Meta:
         model = RelatedTitle
         fields = '__all__'
+
+
+class FolderSerializer(serializers.ModelSerializer):
+    """ Serializer for create folder """
+
+    class Meta:
+        model = Folder
+        fields = '__all__'
+        extra_kwargs = {
+            'user': {'read_only': True}
+        }
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Favorite
+        fields = '__all__'
+
+        extra_kwargs = {
+            'user': {'read_only': True},
+            'title': {'read_only': True}
+        }

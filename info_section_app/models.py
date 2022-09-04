@@ -90,14 +90,14 @@ class Folder(models.Model):
                              verbose_name='пользователь',
                              related_name='folder_owner')
     name = models.CharField(max_length=20,
-                            verbose_name='Название вкладки',
-                            unique=True)
-    public = models.BooleanField(verbose_name='Публичная')
+                            verbose_name='Название вкладки')
+    public = models.BooleanField(verbose_name='Публичная', default=False)
     color = ColorField(verbose_name='Цвет')
 
     class Meta:
         verbose_name = 'Вкладка'
         verbose_name_plural = 'Вкладки'
+        unique_together = (("user", "name"),)
 
     def __str__(self):
         return f'{self.name} - {self.public}'

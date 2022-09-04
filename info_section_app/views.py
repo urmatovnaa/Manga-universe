@@ -4,8 +4,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from info_section_app.models import SimilarLike, SimilarDislike
-from info_section_app.serializers import SimilarCreateSerializer, RelatedCreateSerializer
+from info_section_app.models import SimilarLike, SimilarDislike, Favorite
+from info_section_app.serializers import SimilarCreateSerializer, RelatedCreateSerializer, FolderSerializer, \
+    FavoriteSerializer
 
 
 class SimilarView(ModelViewSet):
@@ -94,3 +95,42 @@ class RelatedView(ModelViewSet):
         except Exception as e:
             print(e)
             return Response('Текущий тайтл есть в этом списке')
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class FolderView(ModelViewSet):
+    """ View for create Folder """
+    serializer_class = FolderSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except Exception:
+            return Response('Такая вкладка уже есть')
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class FavoritesView(ModelViewSet):
+    serializer_class = FavoriteSerializer
+    queryset = Favorite.objects.all()
+    lookup_field = 'title_pk'
+
+    def get(self, request, rest_pk):
+        created = Favorite.objects.filter(restaurant_id=rest_pk, user=request.user).exists()
+        if created:
+            Favorite.objects.filter(
+                restaurant_id=rest_pk,
+                user=request.user
+            ).delete()
+
+            return Response({'success': 'unliked'})
+        else:
+            Favorite.objects.create(restaurant_id=rest_pk, user=request.user)
+            return Response({'success': 'liked'})
