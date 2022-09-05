@@ -80,7 +80,7 @@ class RelatedTitle(models.Model):
         unique_together = (("main_title", "title"),)
 
     def __str__(self):
-        return f'{self.title} - {self.main_title} - {self.criterion}'
+        return f'{self.title} - {self.main_title} - {self.related_type}'
 
 
 class Folder(models.Model):
@@ -100,7 +100,7 @@ class Folder(models.Model):
         unique_together = (("user", "name"),)
 
     def __str__(self):
-        return f'{self.name} - {self.public}'
+        return f'{self.name}'
 
 
 class Favorite(models.Model):

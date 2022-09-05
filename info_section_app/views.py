@@ -93,7 +93,6 @@ class RelatedView(ModelViewSet):
             else:
                 return Response('Нельзя добавить текущий тайтл в этот список')
         except Exception as e:
-            print(e)
             return Response('Текущий тайтл есть в этом списке')
 
     def perform_create(self, serializer):
@@ -117,7 +116,7 @@ class FolderView(ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-class FavoritesView(ModelViewSet):
+class FavoriteView(ModelViewSet):
     serializer_class = FavoriteSerializer
     queryset = Favorite.objects.all()
     lookup_field = 'title_pk'
@@ -125,9 +124,11 @@ class FavoritesView(ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        print(self.request.user)
+        print(kwargs.get('title_pk'))
         serializer.save(
             user=self.request.user,
-            title_id=kwargs.get('title_pk')
+            title=kwargs.get('title_pk')
         )
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED,
