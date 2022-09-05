@@ -86,6 +86,7 @@ class FolderSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
+    liked = serializers.BooleanField(default=False)
 
     class Meta:
         model = Favorite
@@ -95,3 +96,10 @@ class FavoriteSerializer(serializers.ModelSerializer):
             'user': {'read_only': True},
             'title': {'read_only': True}
         }
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        fav_list = Favorite.objects.filter(title=instance.id).values_list('title_id', flat=True).first()
+        if fav_list != None:
+            response['liked'] = True
+        return response

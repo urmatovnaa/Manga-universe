@@ -122,15 +122,15 @@ class FavoritesView(ModelViewSet):
     queryset = Favorite.objects.all()
     lookup_field = 'title_pk'
 
-    def get(self, request, rest_pk):
-        created = Favorite.objects.filter(restaurant_id=rest_pk, user=request.user).exists()
-        if created:
-            Favorite.objects.filter(
-                restaurant_id=rest_pk,
-                user=request.user
-            ).delete()
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(
+            user=self.request.user,
+            title_id=kwargs.get('title_pk')
+        )
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED,
+                        headers=headers)
 
-            return Response({'success': 'unliked'})
-        else:
-            Favorite.objects.create(restaurant_id=rest_pk, user=request.user)
-            return Response({'success': 'liked'})
+
