@@ -8,7 +8,8 @@ urlpatterns = [
         {'get': 'retrieve'}
     )),
     path('<str:title_url>/info', TitleInfoViewSet.as_view({'get': 'retrieve'})),
-    path('<int:title_pk>/rating', MyUserRatingView.as_view({'post': 'create'})),
+    path('<int:title_pk>/rating/create', MyUserRatingView.as_view({'post': 'create'})),
+    path('<int:title_pk>/rating', MyUserRatingView.as_view({'get': 'list'})),
 
     # path('<int:rest_pk>/review/create/', ReviewView.as_view({'get': 'list', 'post': 'create'})),
     # path('<int:rest_pk>/favorites/', FavoritesView.as_view()),
