@@ -1,4 +1,3 @@
-from django.db.models import Count
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -103,29 +102,22 @@ class FolderView(ModelViewSet):
     """ View for create Folder """
     serializer_class = FolderSerializer
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        try:
-            headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        except Exception:
-            return Response('Такая вкладка уже есть')
-
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 
 class FavoriteView(ModelViewSet):
+    """ Перезаписала методы create, get, destroy """
     serializer_class = FavoriteSerializer
-    queryset = Favorite.objects.all()
     lookup_field = 'title_pk'
+
+    def get_queryset(self):
+        title = self.kwargs['title_pk']
+        return Favorite.objects.filter(title=title, user=self.request.user)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        print(self.request.user)
-        print(kwargs.get('title_pk'))
         serializer.save(
             user=self.request.user,
             title=kwargs.get('title_pk')
@@ -134,4 +126,8 @@ class FavoriteView(ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED,
                         headers=headers)
 
-
+    def destroy(self, request, *args, **kwargs):
+        title = self.kwargs['title_pk']
+        instance = Favorite.objects.filter(title=title, user=self.request.user)
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)

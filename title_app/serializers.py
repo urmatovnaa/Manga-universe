@@ -1,9 +1,10 @@
 from rest_framework import serializers
 
+from info_section_app.models import Favorite
 from title_app.models import Title, Rating, Genre, Tag, ReleaseFormat
 
 from admin_panel_app.models import Person, Team
-from info_section_app.serializers import SimilarSerializer, RelatedSerializer
+from info_section_app.serializers import SimilarSerializer, RelatedSerializer, FavoriteSerializer
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -91,6 +92,7 @@ class TitleListSerializer(serializers.ModelSerializer):
     author = PersonSerializer(many=True)
     genres = GenreSerializer(many=True)
     tags = TagSerializer(many=True)
+    # manga_list = FavoriteSerializer(many=True)
 
     class Meta:
         model = Title
