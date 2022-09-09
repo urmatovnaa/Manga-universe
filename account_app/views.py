@@ -22,15 +22,20 @@ class LoginView(views.APIView):
     @swagger_auto_schema(request_body=LoginSerializer)
     def post(self, request, *args, **kwargs):
         login = request.data.get('email')
-        if not Account.objects.filter(email=login).exists():
+        if login != None:
+            if not Account.objects.filter(email=login).exists():
+                return Response(
+                    f'{login} - этого пользователя нет'
+                )
+        elif login == None:
             return Response(
-                f'{login} - does not exists'
+                f'Введите email или пароль'
             )
         user = Account.objects.get(email=login)
         password = request.data.get('password')
         pass_check = user.check_password(password)
         if not pass_check:
-            return Response('email or password incorrect')
+            return Response('email или пароль не верны')
         token = Token.objects.get(user=user)
         return Response({'token': str(token.key)})
 
