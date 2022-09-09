@@ -52,10 +52,6 @@ class MyUserRatingView(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
     lookup_field = 'title_pk'
 
-    def get_queryset(self):
-        title = self.kwargs['title_pk']
-        return Rating.objects.filter(title=title)
-
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -1,4 +1,5 @@
 from rest_framework import status
+from django.db.models import F
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -113,7 +114,9 @@ class FavoriteView(ModelViewSet):
 
     def get_queryset(self):
         title = self.kwargs['title_pk']
-        return Favorite.objects.filter(title=title, user=self.request.user)
+        return Favorite.objects.filter(title=title, user=self.request.user).annotate(
+            folder_name=F('folder__name')
+        )
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

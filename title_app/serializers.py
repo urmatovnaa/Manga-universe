@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from info_section_app.models import Favorite
+from info_section_app.models import Favorite, Folder
 from title_app.models import Title, Rating, Genre, Tag, ReleaseFormat
 
 from admin_panel_app.models import Person, Team
@@ -92,14 +92,23 @@ class TitleListSerializer(serializers.ModelSerializer):
     author = PersonSerializer(many=True)
     genres = GenreSerializer(many=True)
     tags = TagSerializer(many=True)
-    # manga_list = FavoriteSerializer(many=True)
+    favorite_name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Title
         fields = ['id', 'cover', 'russian_name', 'english_name', 'title_type',
                   'release_year', 'author', 'genres', 'tags', 'adult_content',
                   'description', 'rate', 'rating_count', '_average_rating', 'title_type_name',
-                  'adult_content_name']
+                  'adult_content_name', 'favorite_name']
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        users = self.context['view'].request.user.id
+        fav_list = Favorite.objects.filter(title=instance.id, user=users).values_list('folder',  flat=True).first()
+        folder_name = Folder.objects.filter(id=fav_list).values_list('name',  flat=True).first()
+        if fav_list != None:
+            response['favorite_name'] = folder_name
+        return response
 
 
 class TitleInfoSerializer(serializers.ModelSerializer):

@@ -77,6 +77,7 @@ class RelatedSerializer(serializers.ModelSerializer):
 class FolderSerializer(serializers.ModelSerializer):
     """ Serializer for create folder """
 
+
     class Meta:
         model = Folder
         fields = '__all__'
@@ -86,6 +87,8 @@ class FolderSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
+    """ Serializer for adding tittles to the folder """
+    folder_name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Favorite
