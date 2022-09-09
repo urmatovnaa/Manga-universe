@@ -218,7 +218,7 @@ class Rating(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL,
                              on_delete=models.CASCADE,
                              verbose_name='Пользователь')
-    star = models.FloatField(verbose_name='Рейтинг', choices=RATE_CHOICES)
+    star = models.IntegerField(verbose_name='Рейтинг', choices=RATE_CHOICES)
 
     def __str__(self):
         return f'{self.star} - {self.title.english_name} by {self.user.username}'
@@ -227,4 +227,3 @@ class Rating(models.Model):
         verbose_name = 'Рейтинг'
         verbose_name_plural = 'Рейтинги'
         unique_together = (("title", "user"),)
-
