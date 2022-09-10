@@ -121,12 +121,13 @@ class RatingStatisticSerializer(serializers.ModelSerializer):
 
 
 class FavoriteStatisticSerializer(serializers.ModelSerializer):
+    favorite_name = serializers.CharField(read_only=True)
     counting = serializers.IntegerField(default=0)
     percentage = serializers.FloatField(default=0)
 
     class Meta:
         model = Favorite
-        fields = ['folder', 'counting', 'percentage']
+        fields = ['favorite_name', 'counting', 'percentage']
 
 
 class TitleInfoSerializer(serializers.ModelSerializer):

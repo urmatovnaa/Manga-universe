@@ -87,14 +87,14 @@ class FavoriteStatisticView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         title = self.kwargs['title_pk']
-        print(title)
         filtering_by_title = Favorite.objects.filter(title=title)
-        print(filtering_by_title)
-        print(filtering_by_title.values('folder'))
         favorite_statistic = filtering_by_title.values('folder').annotate(
+            favorite_name=F('folder__name'),
             counting=Count('folder'),
-            percentage=Count('folder')*100/len(filtering_by_title)
+            percentage=Count('folder') * 100 / len(filtering_by_title)
         )
-        print(favorite_statistic)
         return favorite_statistic
+
+
+
 
