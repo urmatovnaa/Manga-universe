@@ -118,17 +118,15 @@ class RatingStatisticSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = ['star', 'counting', 'percentage']
-        unique_together = (("star", "counting"),)
 
-    def to_representation(self, instance):
-        response = super().to_representation(instance)
-        print(response)
-        all_count = len(Rating.objects.filter(title=instance.title))
-        counting_list = len(Rating.objects.filter(title=instance.title, star=instance.star))
-        if counting_list != 0:
-            response['counting'] = counting_list
-            response['percentage'] = counting_list*100/all_count
-        return response
+
+class FavoriteStatisticSerializer(serializers.ModelSerializer):
+    counting = serializers.IntegerField(default=0)
+    percentage = serializers.FloatField(default=0)
+
+    class Meta:
+        model = Favorite
+        fields = ['folder', 'counting', 'percentage']
 
 
 class TitleInfoSerializer(serializers.ModelSerializer):
@@ -138,9 +136,8 @@ class TitleInfoSerializer(serializers.ModelSerializer):
     translators = TranslatorsSerializer(many=True)
     similar_titles = SimilarSerializer(many=True)
     related_titles = RelatedSerializer(many=True)
-    rate = RatingStatisticSerializer(many=True)
 
     class Meta:
         model = Title
         fields = ['id', 'genres', 'tags', 'description', 'translators',
-                  'similar_titles', 'related_titles', 'rate']
+                  'similar_titles', 'related_titles']

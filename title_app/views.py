@@ -6,9 +6,10 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import status
 from rest_framework.response import Response
 
+from info_section_app.models import Favorite
 from title_app.models import Title, Rating
 from title_app.serializers import TitleListSerializer, TitleRatingSerializer, \
-    TitleDetailSerializer, TitleInfoSerializer
+    TitleDetailSerializer, TitleInfoSerializer, RatingStatisticSerializer, FavoriteStatisticSerializer
 
 from title_app.filters import TitleFilter
 from title_app.permissions import RatingPermission
@@ -63,4 +64,37 @@ class MyUserRatingView(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED,
                         headers=headers)
 
+
+class RatingStatisticView(viewsets.ModelViewSet):
+    """ Statistic Rating View """
+    serializer_class = RatingStatisticSerializer
+    lookup_field = 'title_pk'
+
+    def get_queryset(self):
+        title = self.kwargs['title_pk']
+        filtering_by_title = Rating.objects.filter(title=title)
+        rating_statistic = filtering_by_title.values('star').annotate(
+            counting=Count('star'),
+            percentage=Count('star')*100/len(filtering_by_title)
+        )
+        return rating_statistic
+
+
+class FavoriteStatisticView(viewsets.ModelViewSet):
+    """ Statistic Favorite View """
+    serializer_class = FavoriteStatisticSerializer
+    lookup_field = 'title_pk'
+
+    def get_queryset(self):
+        title = self.kwargs['title_pk']
+        print(title)
+        filtering_by_title = Favorite.objects.filter(title=title)
+        print(filtering_by_title)
+        print(filtering_by_title.values('folder'))
+        favorite_statistic = filtering_by_title.values('folder').annotate(
+            counting=Count('folder'),
+            percentage=Count('folder')*100/len(filtering_by_title)
+        )
+        print(favorite_statistic)
+        return favorite_statistic
 
