@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from info_section_app.models import Favorite, Folder
+from info_section_app.models import Favorite
 from title_app.models import Title, Rating, Genre, Tag, ReleaseFormat
 
 from admin_panel_app.models import Person, Team
@@ -92,22 +92,22 @@ class TitleListSerializer(serializers.ModelSerializer):
     author = PersonSerializer(many=True)
     genres = GenreSerializer(many=True)
     tags = TagSerializer(many=True)
-    favorite_name = serializers.CharField(read_only=True)
+    folder_name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Title
         fields = ['id', 'cover', 'russian_name', 'english_name', 'title_type',
                   'release_year', 'author', 'genres', 'tags', 'adult_content',
                   'description', 'rate', 'rating_count', '_average_rating', 'title_type_name',
-                  'adult_content_name', 'favorite_name']
+                  'adult_content_name', 'folder_name']
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
         users = self.context['view'].request.user.id
-        fav_list = Favorite.objects.filter(title=instance.id, user=users).values_list('folder',  flat=True).first()
-        folder_name = Folder.objects.filter(id=fav_list).values_list('name',  flat=True).first()
+        fav_list = Favorite.objects.filter(title=instance.id, user=users).values_list(
+            'folder',  flat=True).first()
         if fav_list != None:
-            response['favorite_name'] = folder_name
+            response['folder_name'] = fav_list
         return response
 
 
@@ -121,13 +121,12 @@ class RatingStatisticSerializer(serializers.ModelSerializer):
 
 
 class FavoriteStatisticSerializer(serializers.ModelSerializer):
-    favorite_name = serializers.CharField(read_only=True)
     counting = serializers.IntegerField(default=0)
     percentage = serializers.FloatField(default=0)
 
     class Meta:
         model = Favorite
-        fields = ['favorite_name', 'counting', 'percentage']
+        fields = ['folder', 'counting', 'percentage']
 
 
 class TitleInfoSerializer(serializers.ModelSerializer):

@@ -83,28 +83,15 @@ class RelatedTitle(models.Model):
         return f'{self.title} - {self.main_title} - {self.related_type}'
 
 
-class Folder(models.Model):
-    """ Model for create folders """
-    user = models.ForeignKey(Account,
-                             on_delete=models.CASCADE,
-                             verbose_name='пользователь',
-                             related_name='folder_owner')
-    name = models.CharField(max_length=20,
-                            verbose_name='Название вкладки')
-    public = models.BooleanField(verbose_name='Публичная', default=False)
-    color = ColorField(verbose_name='Цвет')
-
-    class Meta:
-        verbose_name = 'Вкладка'
-        verbose_name_plural = 'Вкладки'
-        unique_together = (("user", "name"),)
-
-    def __str__(self):
-        return f'{self.name}'
-
-
 class Favorite(models.Model):
     """ Избранное """
+    FOLDER_CHOICES = (
+        ('Читаю', 'Читаю'),
+        ('Прочитано', 'Прочитано'),
+        ('Брошено', 'Брошено'),
+        ('В планах', 'В планах'),
+        ('Любимые', 'Любимые'),
+    )
     user = models.ForeignKey(Account,
                              on_delete=models.CASCADE,
                              verbose_name='пользователь',
@@ -113,10 +100,9 @@ class Favorite(models.Model):
                               on_delete=models.CASCADE,
                               verbose_name='тайтл',
                               related_name='manga_list')
-    folder = models.ForeignKey(Folder,
-                               on_delete=models.CASCADE,
-                               verbose_name='вкладка',
-                               related_name='favorite_folder')
+    folder = models.CharField(max_length=255,
+                              choices=FOLDER_CHOICES,
+                              verbose_name='вкладка')
 
     class Meta:
         verbose_name = 'В списках'

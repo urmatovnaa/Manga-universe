@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from info_section_app.models import SimilarTitle, SimilarLike, SimilarDislike, CRITERION_CHOICES, RelatedTitle, Folder, \
-    Favorite
+from info_section_app.models import SimilarTitle, SimilarLike, SimilarDislike, CRITERION_CHOICES, \
+    RelatedTitle, Favorite
 from title_app.models import Title
 
 
@@ -74,21 +74,8 @@ class RelatedSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class FolderSerializer(serializers.ModelSerializer):
-    """ Serializer for create folder """
-
-
-    class Meta:
-        model = Folder
-        fields = '__all__'
-        extra_kwargs = {
-            'user': {'read_only': True}
-        }
-
-
 class FavoriteSerializer(serializers.ModelSerializer):
     """ Serializer for adding tittles to the folder """
-    folder_name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Favorite

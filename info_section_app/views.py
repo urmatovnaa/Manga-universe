@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from info_section_app.models import SimilarLike, SimilarDislike, Favorite
-from info_section_app.serializers import SimilarCreateSerializer, RelatedCreateSerializer, FolderSerializer, \
+from info_section_app.serializers import SimilarCreateSerializer, RelatedCreateSerializer, \
     FavoriteSerializer
 
 
@@ -99,14 +99,6 @@ class RelatedView(ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-class FolderView(ModelViewSet):
-    """ View for create Folder """
-    serializer_class = FolderSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-
 class FavoriteView(ModelViewSet):
     """ Перезаписала методы create, get, destroy """
     serializer_class = FavoriteSerializer
@@ -114,9 +106,7 @@ class FavoriteView(ModelViewSet):
 
     def get_queryset(self):
         title = self.kwargs['title_pk']
-        return Favorite.objects.filter(title=title, user=self.request.user).annotate(
-            folder_name=F('folder__name')
-        )
+        return Favorite.objects.filter(title=title, user=self.request.user)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

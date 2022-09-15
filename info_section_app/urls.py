@@ -1,6 +1,6 @@
 from django.urls import path
 from info_section_app.views import SimilarView, SimilarDislikeView, SimilarLikeView, \
-    RelatedView, FolderView, FavoriteView
+    RelatedView, FavoriteView
 from title_app.views import FavoriteStatisticView
 
 urlpatterns = [
@@ -8,7 +8,6 @@ urlpatterns = [
     path('<int:similar_pk>/dislike/', SimilarDislikeView.as_view()),
     path('<int:title_pk>/similar', SimilarView.as_view({'post': 'create'})),
     path('<int:title_pk>/related', RelatedView.as_view({'post': 'create'})),
-    path('folder/', FolderView.as_view({'post': 'create'})),
     path('<int:title_pk>/favorite/create', FavoriteView.as_view({'post': 'create'})),
     path('<int:title_pk>/favorite', FavoriteView.as_view({'get': 'list', 'delete': 'destroy'})),
     path('<int:title_pk>/favorite/statistic', FavoriteStatisticView.as_view({'get': 'list'})),
