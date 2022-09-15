@@ -8,8 +8,8 @@ urlpatterns = [
     path('<int:similar_pk>/dislike/', SimilarDislikeView.as_view()),
     path('<int:title_pk>/similar', SimilarView.as_view({'post': 'create'})),
     path('<int:title_pk>/related', RelatedView.as_view({'post': 'create'})),
-    path('<int:title_pk>/favorite/create', FavoriteView.as_view({'post': 'create'})),
-    path('<int:title_pk>/favorite', FavoriteView.as_view({'get': 'list', 'delete': 'destroy'})),
+    path('<int:title_pk>/favorite', FavoriteView.as_view(
+        {'get': 'list', 'delete': 'destroy', 'post': 'create'})),
     path('<int:title_pk>/favorite/statistic', FavoriteStatisticView.as_view({'get': 'list'})),
 
     # path('<int:rest_pk>/review/create/', ReviewView.as_view({'get': 'list', 'post': 'create'})),
