@@ -153,7 +153,7 @@ class Title(models.Model):
                                        blank=True,
                                        related_name='publisher')
     genres = models.ManyToManyField(Genre,
-                                    verbose_name='Жанр',
+                                    verbose_name='Жанры',
                                     related_name='genres',
                                     blank=True)
     tags = models.ManyToManyField(Tag,
@@ -198,6 +198,10 @@ class Title(models.Model):
 
     def __str__(self):
         return self.english_name
+
+    def clean(self):
+        self.russian_name = self.russian_name.capitalize()
+        self.english_name = self.english_name.capitalize()
 
     def save(self, *args, **kwargs):
         self.title_url = slugify(self.english_name)

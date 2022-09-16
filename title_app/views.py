@@ -95,5 +95,3 @@ class FavoriteStatisticView(viewsets.ModelViewSet):
         return favorite_statistic
 
 
-
-
