@@ -4,4 +4,4 @@ from django.apps import AppConfig
 class InfoSectionAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'info_section_app'
-    verbose = 'Секция Инфо'
+    verbose_name = 'Секция Инфо'
