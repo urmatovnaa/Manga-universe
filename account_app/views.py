@@ -1,6 +1,7 @@
 from rest_framework import viewsets, views
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
 from drf_yasg.utils import swagger_auto_schema
 
@@ -9,6 +10,7 @@ from account_app.serializers import AccountSerializer, LoginSerializer
 
 
 class AccountRegisterAPIViews(views.APIView):
+    permission_classes = [AllowAny]
     @swagger_auto_schema(request_body=AccountSerializer)
     def post(self, request):
         serializer = AccountSerializer(data=request.data)
@@ -19,6 +21,7 @@ class AccountRegisterAPIViews(views.APIView):
 
 
 class LoginView(views.APIView):
+    permission_classes = [AllowAny]
     @swagger_auto_schema(request_body=LoginSerializer)
     def post(self, request, *args, **kwargs):
         login = request.data.get('email')

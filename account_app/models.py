@@ -22,7 +22,7 @@ class Account(AbstractUser):
                                 unique=True,
                                 validators=[username_validator],
                                 error_messages={
-                                    "unique": "A user with that username already exists."},
+                                    "unique": "Пользователь с таким username уже существует."},
                                 verbose_name='Никнейм')
     email = models.EmailField(unique=True)
     profile_image = models.ImageField(upload_to='avatar',
