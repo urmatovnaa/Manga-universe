@@ -1,119 +1,84 @@
 from django.test import TestCase, Client
+from rest_framework.authtoken.models import Token
+
+from account_app.models import Account
 
 
-class TestUserRegistration(TestCase):
+class AccountsTest(TestCase):
+    def setUp(self):
+        self.user = Account.objects.create_user(
+            email='first@user.com',
+            username='user1',
+            password='somepass',
+            confirm_password='somepass',
+        )
+        print('created test user:' + str(self.user))
 
-    def test_should_allow_only_post(self):
-        c = Client()
-        response = c.get("http://127.0.0.1:8000/social/registration/")
-        assert response.status_code == 405
-        response = c.put("http://127.0.0.1:8000/social/registration/")
-        assert response.status_code == 405
-        response = c.delete("http://127.0.0.1:8000/social/registration/")
-        assert response.status_code == 405
-        response = c.patch("http://127.0.0.1:8000/social/registration/")
-        assert response.status_code == 405
-
-    def test_should_register(self):
+    def test_register_user(self):
+        """
+        Тестируем:
+        1) Создание юзера
+        2) Авторизацию
+        3) Сверяем токены
+        """
+        # ТЕСТ-1: создаем пользователя
         c = Client()
         response = c.post(
             "http://127.0.0.1:8000/social/registration/",
             data={
-                "email": "test user 1",
-                "username": " test username ",
-                "password": "some password",
-                "confirm_password": "some password",
+                "email": "email@mail.ru",
+                "username": "username2",
+                "password": "password24",
+                "confirm_password": "password24",
             }
         )
         assert response.status_code == 200
 
-
-class TestProductModel(TestCase):
-    def test_too_long_name_should_fail(self):
+    # ТЕСТ-2: авторизовываемся чтобы server создал токен для клиента
+    def test_should_login(self):
         c = Client()
-        text = "a" * 256
         response = c.post(
-            "http://127.0.0.1:8000/social/registration/",
+            "http://127.0.0.1:8000/social/login/",
             data={
-                "name": text,
-                "price": 1200,
-                "description": "some info"
-            }
-        )
-        assert response.status_code == 400
+                'email': "first@user.com",
+                "password": "somepass",
+                }
+            )
+        # после авторизации забираем ответ где хранится токен
+        assert response.status_code == 200
+        self.assertIn('auth_token', response.data)
+
+        # ТЕСТ-3: получаем id последнего зарегистрированного
+        # пользователя и сверяем с тем что был в response
+        user = self.User.objects.latest('id')
+        # # получаем его токен
+        token = Token.objects.get(user=user)
+        self.assertEqual(response.data['auth_token'], token.key)
+
+    def test_should_not_login(self):
+        c = Client()
+        response = c.post(
+            "http://127.0.0.1:8000/social/login/",
+            data={
+                'email': "first4@user.com",
+                "password": "somepass",
+                }
+            )
+        # после авторизации забираем ответ где хранится токен
+        assert response.status_code == 200
+        assert response.json() == "first4@user.com - этого пользователя нет"
 
     def test_have_not_required_fields_should_fail(self):
-        # required fields - name, description, price
+        # required fields - email, username, password, confirm_password
         c = Client()
         response = c.post(
-            "http://127.0.0.1:8000/product/",
+            "http://127.0.0.1:8000/social/registration/",
             data={
-                "name": "product 1",
-                "description": "some info"
+                "email": "testuser@gmail.com",
+                "username": " test user "
             }
         )
+        print(response.status_code)
         assert response.status_code == 400
 
-    def test_price_field_more8_digits_or_2decimal_places_should_fail(self):
-        c = Client()
-        response = c.post(
-            "http://127.0.0.1:8000/product/",
-            data={
-                "name": "test product",
-                "price": 120000000,
-                "description": "some info"
-            }
-        )
-        assert response.status_code == 400
-        response = c.post(
-            "http://127.0.0.1:8000/product/",
-            data={
-                "name": "test product",
-                "price": 120.505,
-                "description": "some info"
-            }
-        )
-        assert response.status_code == 400
-
-    def test_wrong_type_field_should_fail(self):
-        c = Client()
-        response = c.post(
-            "http://127.0.0.1:8000/product/",
-            data={
-                "name": "test product",
-                "price": "something",
-                "description": "some info"
-            }
-        )
-        assert response.status_code == 400
-
-
-class TestProductDetail(TestCase):
-
-    # def setUp(self):
-    #     Product.objects.create(name="Product 1", price=100, description="some info")
-    #     Product.objects.create(name="Product 2", price=100, description="some info")
-    #     Product.objects.create(name="Product 3", price=100, description="some info")
-    #
-    # def test_update_put_post(self):
-    #     """
-    #     Check if we can update post
-    #     """
-    #     c = Client()
-    #     product = Product.objects.get(id=1)
-    #     data = {'name': 'Product 1 modified', 'price': 200, 'description': 'info modified'}
-    #     response = c.put("http://127.0.0.1:8000/product/1", data=data, content_type="application/json")
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_should_allow_put_delete_get(self):
-        c = Client()
-        # product = Product.objects.get(id=1)
-        response = c.get("http://127.0.0.1:8000/product/1")
-        assert response.status_code == 200
-        response = c.post("http://127.0.0.1:8000/product/1")
-        assert response.status_code == 405    # not allowed
-        response = c.delete("http://127.0.0.1:8000/product/1")
-        assert response.status_code == 204
-        response = c.patch("http://127.0.0.1:8000/product/1")
-        assert response.status_code == 405    # not allowed
 
