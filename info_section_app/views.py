@@ -25,10 +25,9 @@ class SimilarView(ModelViewSet):
                 headers = self.get_success_headers(serializer.data)
                 return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
             else:
-                return Response('Нельзя добавить текущий тайтл в этот список')
+                return Response('Нельзя добавить текущий тайтл в этот список', status=400)
         except Exception as e:
-            print(e)
-            return Response('Текущий тайтл есть в этом списке')
+            return Response('Текущий тайтл есть в этом списке', status=400)
 
 
 class SimilarLikeView(APIView):
@@ -91,9 +90,9 @@ class RelatedView(ModelViewSet):
                 headers = self.get_success_headers(serializer.data)
                 return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
             else:
-                return Response('Нельзя добавить текущий тайтл в этот список')
+                return Response('Нельзя добавить текущий тайтл в этот список', status=400)
         except Exception as e:
-            return Response('Текущий тайтл есть в этом списке')
+            return Response('Текущий тайтл есть в этом списке', status=400)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

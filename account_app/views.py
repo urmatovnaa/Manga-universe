@@ -17,7 +17,7 @@ class AccountRegisterAPIViews(views.APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         token = Token.objects.create(user=user)
-        return Response({'token': str(token.key)})
+        return Response({'token': str(token.key)}, status=201)
 
 
 class LoginView(views.APIView):
@@ -29,16 +29,16 @@ class LoginView(views.APIView):
             if not Account.objects.filter(email=login).exists():
                 return Response(
                     f'{login} - этого пользователя нет'
-                )
+                , status=400)
         elif login == None:
             return Response(
                 f'Введите email или пароль'
-            )
+            , status=400)
         user = Account.objects.get(email=login)
         password = request.data.get('password')
         pass_check = user.check_password(password)
         if not pass_check:
-            return Response('email или пароль не верны')
+            return Response('Введите пароль и email', status=400)
         token = Token.objects.get(user=user)
-        return Response({'token': str(token.key)})
+        return Response({'token': str(token.key)}, status=201)
 
