@@ -56,13 +56,15 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'drf_yasg',
+    'django_celery_results',
     # 'silk',
     'corsheaders',
     # my apps
     'title_app',
     'admin_panel_app',
     'account_app',
-    'info_section_app'
+    'info_section_app',
+    'manga_report',
 ]
 
 MIDDLEWARE = [
@@ -102,16 +104,23 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {'ENGINE': env('DATABASE_ENGINE'),
-                'NAME': env('DATABASE_NAME'),
-                'USER': env('DATABASE_USER'),
-                'PASSWORD': env('DATABASE_PASSWORD'),
-                'HOST': env('DATABASE_HOST'),
-                'PORT': env('DATABASE_PORT')
-                }
-}
+# DATABASES = {
 
+#     'default': {'ENGINE': 'django.db.backends.postgresql',
+#                 'NAME': env('DATABASE_NAME'),
+#                 'USER': env('DATABASE_USER'),
+#                 'PASSWORD': env('DATABASE_PASSWORD'),
+#                 'HOST': env('DATABASE_HOST'),
+#                 'PORT': env('DATABASE_PORT')
+#                 }
+# }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -170,6 +179,18 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'account_app.Account'
+
+#celery
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+    }
+}
+
 
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'account_app.serializers.AccountSerializer',

@@ -8,6 +8,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from manga_report.views import ReportView
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -31,6 +32,8 @@ urlpatterns = [
    # my urls
    path('', include('title_app.urls')),
    path('manga/', include('info_section_app.urls')),
-   path('social/', include('account_app.urls'))
+   path('social/', include('account_app.urls')),
+   path('report/report/', ReportView.as_view())
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

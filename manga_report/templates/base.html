@@ -1,0 +1,23 @@
+
+<!doctype html>
+{% load static %}
+<html>
+    <head>
+        <title>
+            {% block title %}
+                Manga-universe
+            {% endblock %}
+        </title>
+        <link rel="stylesheet" href="{% static 'style.css' %}"/>
+    </head>
+
+    <body>
+        <nav>
+            <a>Домой</a>
+            <a href="/report/report/">Отчёт</a>
+        </nav>
+        {% block content %}
+
+        {% endblock %}
+    </body>
+</html>
