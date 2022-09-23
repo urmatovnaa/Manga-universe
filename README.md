@@ -1,31 +1,5 @@
 PROJECT'S NAME: manga_universe
 
-CLONING PROJECT:
-
-for HTTPS:
-
-https://github.com/urmatovnaa/Manga-universe.git
-
-for SSH key:
-
-git@github.com:urmatovnaa/Manga-universe.git
-
-NEXT STEPS:
-
-1.Install venv in project:
-
-python3 -m venv venv
-
-2.Start virtualenv:
-
-source venv/bin/activate
-
-3.Installing all requirements:
-
-pip install -r requirements.txt
-
-4.need to add env vars: DATABASE_NAME ...
-
 TO START PROJECT:
 1)sudo su (+ your password)
 
