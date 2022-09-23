@@ -32,7 +32,7 @@ class AccountsTest(TestCase):
                 "confirm_password": "password24",
             }
         )
-        assert response.status_code == 200
+        assert response.status_code == 201
 
     # ТЕСТ-2: авторизовываемся чтобы server создал токен для клиента
     def test_should_login(self):
@@ -65,8 +65,7 @@ class AccountsTest(TestCase):
                 }
             )
         # после авторизации забираем ответ где хранится токен
-        assert response.status_code == 200
-        assert response.json() == "first4@user.com - этого пользователя нет"
+        assert response.status_code == 400
 
     def test_have_not_required_fields_should_fail(self):
         # required fields - email, username, password, confirm_password
