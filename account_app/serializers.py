@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from account_app.models import Account
+from rest_framework.authtoken.models import Token
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -25,6 +26,7 @@ class AccountSerializer(serializers.ModelSerializer):
             username=validated_data["username"],
             password=validated_data["password"],
         )
+
         return user
 
 

@@ -9,20 +9,20 @@ from account_app.models import Account
 from account_app.serializers import AccountSerializer, LoginSerializer
 
 
-class AccountRegisterAPIViews(views.APIView):
-    permission_classes = [AllowAny]
-    @swagger_auto_schema(request_body=AccountSerializer)
-    def post(self, request):
-        serializer = AccountSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        token = Token.objects.create(user=user)
-        return Response({'token': str(token.key)}, status=201)
+# class AccountRegisterAPIViews(views.APIView):
+#     permission_classes = [AllowAny]
+#     @swagger_auto_schema(request_body=AccountSerializer)
+#     def post(self, request):
+#         serializer = AccountSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         user = serializer.save()
+#         token = Token.objects.create(user=user)
+#         return Response({'token': str(token.key)}, status=201)
 
 
 class LoginView(views.APIView):
     permission_classes = [AllowAny]
-    @swagger_auto_schema(request_body=LoginSerializer)
+    # @swagger_auto_schema(request_body=LoginSerializer)
     def post(self, request, *args, **kwargs):
         login = request.data.get('email')
         if login != None:
