@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # third party
     'colorfield',
     'drf_multiple_model',
@@ -59,12 +60,13 @@ INSTALLED_APPS = [
     'django_celery_results',
     # 'silk',
     'corsheaders',
+
     # my apps
-    'title_app',
-    'admin_panel_app',
-    'account_app',
-    'info_section_app',
-    'manga_report',
+    'apps.title_app',
+    'apps.admin_panel_app',
+    'apps.account_app',
+    'apps.info_section_app',
+    'apps.manga_report',
 ]
 
 MIDDLEWARE = [
